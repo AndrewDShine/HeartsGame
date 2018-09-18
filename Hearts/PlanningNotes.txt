@@ -1,0 +1,12 @@
+Hearts Planning Board
+
+What objects will we need?
+-A card
+--Cards need suits and ranks
+--Ranks are internally classed as a number, but need to be interpreted for syso-ing
+
+-The pool in the middle
+--Holds cards, needs to be able to empty
+--has to tally up points off of the various hearts/queen of spades in it
+--checks if player got all 26 points, acts accordingly
+-The discard pile
