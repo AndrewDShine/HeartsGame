@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Collections;
 
 public class HeartsRunner
 	{
@@ -14,6 +15,7 @@ public class HeartsRunner
 				generateDeck();
 				System.out.println("Ready to play Hearts? It's a four-player game, so you'd better grab some friends!");
 				makePlayers(4);
+				shuffleAndDeal(4);
 			}
 		public static void generateDeck()
 		{
@@ -43,14 +45,20 @@ public class HeartsRunner
 					System.out.println("Nice to meet ya, "+players.get((i-1)).getName()+"!");
 					System.out.print("\n");
 				}
-			
-			for(int i = 0; i < numOfPlayers; i++)
+		}
+		public static void shuffleAndDeal(int numOfPlayers)
+		{
+			Collections.shuffle(deck);
+			for(int j = 0; j < numOfPlayers; j++)
 				{
-					for(int j = 0; i < 13; j++)
+					for(int i = 12; i >= 0; i--)
 						{
-							players.get(i).addToHand(deck.get(j));
-							System.out.println(deck.get(j).getRank());
-							System.out.println("iteration");
+							int rand = (int)(Math.random()*i);
+							HumanPlayer p = players.get(j);
+							Card c = deck.get(rand);
+							p.addToHand(c);
+							deck.remove(c);
+							System.out.println(c.getSuit() + " " + c.getRank() + " " + p.getName());
 						}
 				}
 		}

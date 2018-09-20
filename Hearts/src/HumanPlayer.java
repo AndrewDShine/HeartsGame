@@ -27,7 +27,7 @@ public class HumanPlayer
 		{
 			hand.add(c);
 		}
-		public static int returnSizeOfHand()
+		public static int sizeOfHand()
 		{
 			return hand.size();
 		}
