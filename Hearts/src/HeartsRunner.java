@@ -16,6 +16,7 @@ public class HeartsRunner
 				System.out.println("Ready to play Hearts? It's a four-player game, so you'd better grab some friends!");
 				makePlayers(4);
 				shuffleAndDeal(4);
+				System.out.println(chooseWhoGoesFirst().getName());
 			}
 		public static void generateDeck()
 		{
@@ -61,6 +62,22 @@ public class HeartsRunner
 							System.out.println(c.getSuit() + " " + c.getRank() + " " + p.getName());
 						}
 				}
+		}
+		public static HumanPlayer chooseWhoGoesFirst()
+		{
+			int starter = 0;
+			for(HumanPlayer h: players)
+				{
+					ArrayList<Card> playersHand = h.getHand();
+					for(Card c: playersHand)
+						{
+							if(c.getSuit().equals("Clubs") && c.getRank() == 2)
+								{
+									starter = players.indexOf(h);
+								}
+						}
+				}
+			return players.get(starter);
 		}
 
 	}
