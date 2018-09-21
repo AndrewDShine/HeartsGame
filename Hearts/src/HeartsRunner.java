@@ -18,7 +18,7 @@ public class HeartsRunner
 				shuffleAndDeal(4);
 				System.out.println(chooseWhoGoesFirst().getName());
 				HumanPlayer currentlyUp = chooseWhoGoesFirst();
-				currentlyUp.turn();
+				turn(currentlyUp);
 			}
 		public static void generateDeck()
 		{
@@ -41,12 +41,11 @@ public class HeartsRunner
 		}
 		public static void makePlayers(int numOfPlayers)
 		{
-			for (int i = 1; i <= numOfPlayers; i++)
+			for (int i = 0; i < numOfPlayers; i++)
 				{
-					System.out.println("Hi, Player "+i+"! What's your name?");
-					players.add(new HumanPlayer(userStringPut.nextLine()));
-					System.out.println("Nice to meet ya, "+players.get((i-1)).getName()+"!");
-					System.out.print("\n");
+					System.out.println("Hi, Player "+(i+1)+"! What's your name?");
+					players.add(i,new HumanPlayer(userStringPut.nextLine(), 0, new ArrayList<Card>()));
+					System.out.println("Nice to meet ya, "+players.get((i)).getName()+"!");
 				}
 		}
 		public static void shuffleAndDeal(int numOfPlayers)
@@ -54,14 +53,14 @@ public class HeartsRunner
 			Collections.shuffle(deck);
 			for(int j = 0; j < numOfPlayers; j++)
 				{
+					HumanPlayer p = players.get(j);
 					for(int i = 12; i >= 0; i--)
 						{
 							int rand = (int)(Math.random()*i);
-							HumanPlayer p = players.get(j);
 							Card c = deck.get(rand);
 							p.addToHand(c);
 							deck.remove(c);
-							System.out.println(c.getSuit() + " " + c.getRank() + " " + p.getName());
+//							System.out.println(c.getSuit() + " " + c.getRank() + " " + p.getName());
 						}
 				}
 		}
@@ -81,6 +80,15 @@ public class HeartsRunner
 				}
 			return players.get(starter);
 		}
+		public static Card turn(HumanPlayer h)
+			{
+				System.out.println("Your turn, " + h.getName() + "! What card would you like to play? The cards in your hand are:");
+				for(int i = 0; i < h.getHand().size(); i++)
+					{
+						System.out.println((i+1)+") The "+h.getHand().get(i).getRank()+" of "+h.getHand().get(i).getSuit());
+					}
+				return h.getHand().get(0);
+			}
 		
 
 	}
