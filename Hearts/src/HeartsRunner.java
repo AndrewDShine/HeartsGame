@@ -17,6 +17,8 @@ public class HeartsRunner
 				makePlayers(4);
 				shuffleAndDeal(4);
 				System.out.println(chooseWhoGoesFirst().getName());
+				HumanPlayer currentlyUp = chooseWhoGoesFirst();
+				currentlyUp.turn();
 			}
 		public static void generateDeck()
 		{
@@ -79,5 +81,6 @@ public class HeartsRunner
 				}
 			return players.get(starter);
 		}
+		
 
 	}
