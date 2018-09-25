@@ -5,12 +5,14 @@ public class HumanPlayer
 		private String name;
 		private int score;
 		private ArrayList<Card> hand;
+		private ArrayList<Card> discardPile;
 		
-		public HumanPlayer(String n, int s, ArrayList<Card> h)
+		public HumanPlayer(String n, int s, ArrayList<Card> h, ArrayList<Card> d)
 		{
 			name = n;
 			score = s;
 			hand = h;
+			discardPile = d;
 		}
 
 		public String getName()
@@ -45,6 +47,13 @@ public class HumanPlayer
 		{
 			hand.remove(c);
 		}
+		public ArrayList<Card> getDiscardPile() {
+			return discardPile;
+		}
+		public void setDiscardPile(ArrayList<Card> discardPile) {
+			this.discardPile = discardPile;
+		}
+		
 		
 		
 	}
