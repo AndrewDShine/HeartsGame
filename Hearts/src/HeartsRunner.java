@@ -51,21 +51,21 @@ public class HeartsRunner
 			}
 		public static void generateDeck()
 		{
-			for(int i = 1; i <= 13; i++)
+			for(int i = 2; i <= 14; i++)
 				{
-					deck.add(new Card("Hearts", i));
+					deck.add(new Card("Hearts", i, 0));
 				}
-			for(int i = 1; i <=13; i++)
+			for(int i = 2; i <=14; i++)
 				{
-					deck.add(new Card("Spades", i));
+					deck.add(new Card("Spades", i, 0));
 				}
-			for(int i = 1; i <=13; i++)
+			for(int i = 2; i <=14; i++)
 				{
-					deck.add(new Card("Clubs", i));
+					deck.add(new Card("Clubs", i, 0));
 				}
-			for(int i = 1; i <=13; i++)
+			for(int i = 2; i <=14; i++)
 				{
-					deck.add(new Card("Diamonds", i));
+					deck.add(new Card("Diamonds", i, 0));
 				}
 		}
 		public static void makePlayers(int numOfPlayers)
@@ -118,26 +118,46 @@ public class HeartsRunner
 					}
 				int cardChoice = userIntPut.nextInt();
 				cardChoice -= 1;
-				pool.add(h.getHand().get(cardChoice));
-				System.out.println(h.getName() + " played the "+h.getHand().get(cardChoice).getRankString()+" of "+h.getHand().get(cardChoice).getSuit());
+				Card c = h.getHand().get(cardChoice);
+				
+				pool.add(c);
+				System.out.println(h.getName() + " played the "+c.getCardType());
+				c.setIndexOfLastPlayer(players.indexOf(h));
 				h.removeFromHand(h.getHand().remove(cardChoice));
 				System.out.println("The pool now contains: ");
-				for (Card c: pool)
+				for (Card ca: pool)
 				{
-					System.out.println("The "+c.getCardType());
+					System.out.println("The "+ca.getCardType()/*+ ", played by " +ca.getIndexOfLastPlayer()*/);
 				}
 			}
 		public static void evaluatePool()
 		{
 			String suitLed = pool.get(0).getSuit();
-			int highestCard = 0;
+			int playerOfHighestCard = 0;
+			int points = 0;
+			
 			for (Card c: pool)
-			{
-				if (c.getSuit().equals(suitLed) && c.getRank() > highestCard)
 				{
-					
+					if (c.getSuit().equals(suitLed) && c.getRank() > playerOfHighestCard)
+						{
+							playerOfHighestCard = c.getIndexOfLastPlayer();
+						}
 				}
-			}
+			for (Card c: pool)
+				{
+					players.get(playerOfHighestCard).addToDiscardPile(c);
+					if (c.getSuit().equals("Hearts"))
+						{
+							points += 1;
+						}
+					if (c.getSuit().equals("Spades") && c.getRank() == 12)
+						{
+							points += 13;
+						}
+				}
+			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool, and with it " + points + " points!");
+			players.get(playerOfHighestCard).addToScore(points);
+			pool.clear();
 		}
 		
 

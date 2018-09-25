@@ -2,11 +2,13 @@ public class Card
 	{
 		private int rank;
 		private String suit;
+		private int indexOfLastPlayer;
 		
-		public Card(String s, int r)
+		public Card(String s, int r, int i)
 		{
 			rank = r;
 			suit = s;
+			indexOfLastPlayer = i;
 		}
 		
 		public int getRank()
@@ -21,8 +23,6 @@ public class Card
 		{
 			switch (rank)
 			{
-			case 1:
-				return "Ace";
 			case 2:
 			case 3:
 			case 4:
@@ -39,6 +39,8 @@ public class Card
 				return "Queen";
 			case 13:
 				return "King";
+			case 14:
+				return "Ace";
 			}
 			return Integer.toString(rank);
 		}
@@ -46,6 +48,15 @@ public class Card
 		{
 			return (getRankString() + " of " + getSuit());
 		}
+		public int getIndexOfLastPlayer()
+			{
+				return indexOfLastPlayer;
+			}
+		public void setIndexOfLastPlayer(int indexOfLastPlayer)
+			{
+				this.indexOfLastPlayer = indexOfLastPlayer;
+			}
+		
 		
 		
 	}

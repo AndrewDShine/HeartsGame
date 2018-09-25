@@ -31,6 +31,10 @@ public class HumanPlayer
 		{
 			this.score = score;
 		}
+		public void addToScore(int s)
+		{
+			score += s;
+		}
 		public ArrayList<Card> getHand()
 		{
 			return hand;
@@ -52,6 +56,14 @@ public class HumanPlayer
 		}
 		public void setDiscardPile(ArrayList<Card> discardPile) {
 			this.discardPile = discardPile;
+		}
+		public void addToDiscardPile(Card c)
+		{
+			discardPile.add(c);
+		}
+		public void clearDiscardPile()
+		{
+			discardPile.clear();
 		}
 		
 		
