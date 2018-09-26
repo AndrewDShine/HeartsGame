@@ -6,47 +6,59 @@ public class HeartsRunner
 	{
 		static ArrayList<Card> deck = new ArrayList<Card>();
 		static ArrayList<Card> pool = new ArrayList<Card>();
-		static ArrayList<HumanPlayer> players = new ArrayList<HumanPlayer>();
+		static ArrayList<Player> players = new ArrayList<Player>();
 		static Scanner userStringPut = new Scanner(System.in);
 		static Scanner userIntPut = new Scanner(System.in);
 		
 		public static void main(String[] args)
 			{
+//				This block of code runs once, when the game first begins.
 				generateDeck();
 				System.out.println("Ready to play Hearts? It's a four-player game, so you'd better grab some friends!");
 				makePlayers(4);
-				shuffleAndDeal(4);
-//				System.out.println(chooseWhoGoesFirst().getName());
-				HumanPlayer currentlyUp = chooseWhoGoesFirst();
-				turn(currentlyUp);
-				int startPlayer = players.indexOf(currentlyUp);
-				for (int i = 1; i < 4; i++)
-				{
-					HumanPlayer h = players.get(0);
-					switch (startPlayer + 1)
+				boolean win = false;
+				do
 					{
-						case 1:
-						case 2:
-						case 3:
-//							System.out.println("cahnged it");
-							h = players.get(startPlayer + 1);
-							startPlayer += 1;
-							break;
-						case 4:
-//							System.out.println("changed too");
-							h = players.get(0);
-							startPlayer = 0;
-							break;
-							
+						shuffleAndDeal(4);
+						Player currentlyUp = chooseWhoGoesFirst();
+						for (int j = 0; j < 13; j++)
+							{
+								turn(currentlyUp);
+								int startPlayer = players.indexOf(currentlyUp);
+								for (int i = 1; i < 4; i++)
+									{
+										Player h = players.get(0);
+										switch (startPlayer + 1)
+										{
+										case 1:
+										case 2:
+										case 3:
+											h = players.get(startPlayer + 1);
+											startPlayer += 1;
+											break;
+										case 4:
+											h = players.get(0);
+											startPlayer = 0;
+											break;
+									
+										}
+										if (h.getHand().size() > 0)
+											{
+												turn(h);
+											}
+									}
+								currentlyUp = evaluatePool();
+							}
+						
+						for(Player h: players)
+							{
+								if(h.getScore() == 50)
+									{
+										win = true;
+									}
+							}
 					}
-					if (h.getHand().size() > 0)
-					{
-						turn(h);
-					}
-				}
-				evaluatePool();
-				
-
+				while(!win);
 				
 			}
 		public static void generateDeck()
@@ -73,7 +85,7 @@ public class HeartsRunner
 			for (int i = 0; i < numOfPlayers; i++)
 				{
 					System.out.println("Hi, Player "+(i+1)+"! What's your name?");
-					players.add(i,new HumanPlayer(userStringPut.nextLine(), 0, new ArrayList<Card>(), new ArrayList<Card>()));
+					players.add(i,new Player(userStringPut.nextLine(), 0, new ArrayList<Card>()));
 					System.out.println("Nice to meet ya, "+players.get((i)).getName()+"!");
 				}
 		}
@@ -82,21 +94,20 @@ public class HeartsRunner
 			Collections.shuffle(deck);
 			for(int j = 0; j < numOfPlayers; j++)
 				{
-					HumanPlayer p = players.get(j);
+					Player p = players.get(j);
 					for(int i = 12; i >= 0; i--)
 						{
 							int rand = (int)(Math.random()*i);
 							Card c = deck.get(rand);
 							p.addToHand(c);
-							deck.remove(c);
 //							System.out.println(c.getSuit() + " " + c.getRank() + " " + p.getName());
 						}
 				}
 		}
-		public static HumanPlayer chooseWhoGoesFirst()
+		public static Player chooseWhoGoesFirst()
 		{
 			int starter = 0;
-			for(HumanPlayer h: players)
+			for(Player h: players)
 				{
 					ArrayList<Card> playersHand = h.getHand();
 					for(Card c: playersHand)
@@ -109,7 +120,7 @@ public class HeartsRunner
 				}
 			return players.get(starter);
 		}
-		public static void turn(HumanPlayer h)
+		public static void turn(Player h)
 			{
 				System.out.println("Your turn, " + h.getName() + "! What card would you like to play? The cards in your hand are:");
 				for(int i = 0; i < h.getHand().size(); i++)
@@ -130,7 +141,7 @@ public class HeartsRunner
 					System.out.println("The "+ca.getCardType()/*+ ", played by " +ca.getIndexOfLastPlayer()*/);
 				}
 			}
-		public static void evaluatePool()
+		public static Player evaluatePool()
 		{
 			String suitLed = pool.get(0).getSuit();
 			int playerOfHighestCard = 0;
@@ -145,12 +156,11 @@ public class HeartsRunner
 				}
 			for (Card c: pool)
 				{
-					players.get(playerOfHighestCard).addToDiscardPile(c);
 					if (c.getSuit().equals("Hearts"))
 						{
 							points += 1;
 						}
-					if (c.getSuit().equals("Spades") && c.getRank() == 12)
+					else if (c.getSuit().equals("Spades") && c.getRank() == 12)
 						{
 							points += 13;
 						}
@@ -158,6 +168,18 @@ public class HeartsRunner
 			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool, and with it " + points + " points!");
 			players.get(playerOfHighestCard).addToScore(points);
 			pool.clear();
+			return players.get(playerOfHighestCard);
+			
+		}
+		public static void chooseWinner()
+		{
+			Collections.sort(players, new PlayerSorter());
+			for(Player p: players)
+				{
+					System.out.println(p.getName());
+				}
+			System.out.println("The game is over! The final rankings are: ");
+			System.out.println("1st Place: ");
 		}
 		
 

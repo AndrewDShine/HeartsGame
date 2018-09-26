@@ -1,18 +1,16 @@
 import java.util.ArrayList;
 
-public class HumanPlayer
+public class Player
 	{
 		private String name;
 		private int score;
 		private ArrayList<Card> hand;
-		private ArrayList<Card> discardPile;
 		
-		public HumanPlayer(String n, int s, ArrayList<Card> h, ArrayList<Card> d)
+		public Player(String n, int s, ArrayList<Card> h)
 		{
 			name = n;
 			score = s;
 			hand = h;
-			discardPile = d;
 		}
 
 		public String getName()
@@ -51,21 +49,5 @@ public class HumanPlayer
 		{
 			hand.remove(c);
 		}
-		public ArrayList<Card> getDiscardPile() {
-			return discardPile;
-		}
-		public void setDiscardPile(ArrayList<Card> discardPile) {
-			this.discardPile = discardPile;
-		}
-		public void addToDiscardPile(Card c)
-		{
-			discardPile.add(c);
-		}
-		public void clearDiscardPile()
-		{
-			discardPile.clear();
-		}
-		
-		
 		
 	}
