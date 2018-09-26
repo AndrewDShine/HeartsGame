@@ -174,12 +174,11 @@ public class HeartsRunner
 		public static void chooseWinner()
 		{
 			Collections.sort(players, new PlayerSorter());
-			for(Player p: players)
-				{
-					System.out.println(p.getName());
-				}
 			System.out.println("The game is over! The final rankings are: ");
-			System.out.println("1st Place: ");
+			System.out.println("1st Place: "+players.get(0));
+			System.out.println("2nd Place: "+players.get(1));
+			System.out.println("3rd Place: "+players.get(2));
+			System.out.println("4th Place: "+players.get(3));
 		}
 		
 
