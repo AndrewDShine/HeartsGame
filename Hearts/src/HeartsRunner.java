@@ -9,21 +9,27 @@ public class HeartsRunner
 		static ArrayList<Player> players = new ArrayList<Player>();
 		static Scanner userStringPut = new Scanner(System.in);
 		static Scanner userIntPut = new Scanner(System.in);
+		static boolean heartsBroken = false;
+		static int turnCounter;
 		
 		public static void main(String[] args)
 			{
 //				This block of code runs once, when the game first begins.
-				generateDeck();
+
 				System.out.println("Ready to play Hearts? It's a four-player game, so you'd better grab some friends!");
 				makePlayers(4);
 				boolean win = false;
 				do
 					{
+						heartsBroken = false;
+						turnCounter = 1;
+						generateDeck();
 						shuffleAndDeal(4);
 						Player currentlyUp = chooseWhoGoesFirst();
 						for (int j = 0; j < 13; j++)
 							{
 								turn(currentlyUp);
+								turnCounter += 1;
 								int startPlayer = players.indexOf(currentlyUp);
 								for (int i = 1; i < 4; i++)
 									{
@@ -42,10 +48,12 @@ public class HeartsRunner
 											break;
 									
 										}
-										if (h.getHand().size() > 0)
-											{
-												turn(h);
-											}
+//										if (h.getHand().size() > 0)
+//											{
+//												turn(h);
+//											}
+										turn(h);
+										turnCounter += 1;
 									}
 								currentlyUp = evaluatePool();
 							}
@@ -59,25 +67,26 @@ public class HeartsRunner
 							}
 					}
 				while(!win);
+				chooseWinner();
 				
 			}
 		public static void generateDeck()
 		{
 			for(int i = 2; i <= 14; i++)
 				{
-					deck.add(new Card("Hearts", i, 0));
+					deck.add(new Card("Hearts", i, 0, false));
 				}
 			for(int i = 2; i <=14; i++)
 				{
-					deck.add(new Card("Spades", i, 0));
+					deck.add(new Card("Spades", i, 0, false));
 				}
 			for(int i = 2; i <=14; i++)
 				{
-					deck.add(new Card("Clubs", i, 0));
+					deck.add(new Card("Clubs", i, 0, true));
 				}
 			for(int i = 2; i <=14; i++)
 				{
-					deck.add(new Card("Diamonds", i, 0));
+					deck.add(new Card("Diamonds", i, 0, false));
 				}
 		}
 		public static void makePlayers(int numOfPlayers)
@@ -100,6 +109,7 @@ public class HeartsRunner
 							int rand = (int)(Math.random()*i);
 							Card c = deck.get(rand);
 							p.addToHand(c);
+							deck.remove(c);
 //							System.out.println(c.getSuit() + " " + c.getRank() + " " + p.getName());
 						}
 				}
@@ -122,10 +132,17 @@ public class HeartsRunner
 		}
 		public static void turn(Player h)
 			{
-				System.out.println("Your turn, " + h.getName() + "! What card would you like to play? The cards in your hand are:");
-				for(int i = 0; i < h.getHand().size(); i++)
+				System.out.println("Your turn, " + h.getName() + "! What card would you like to play? The (playable) cards in your hand are:");
+//				for(int i = 0; i < h.getHand().size(); i++)
+//					{
+//						System.out.println((i+1)+") The "+h.getHand().get(i).getRankString()+" of "+h.getHand().get(i).getSuit());
+//					}
+				for(Card ca: h.getHand())
 					{
-						System.out.println((i+1)+") The "+h.getHand().get(i).getRankString()+" of "+h.getHand().get(i).getSuit());
+						if(ca.isPlayable())
+							{
+								System.out.println((h.getHand().indexOf(ca)+1)+") The "+ca.getCardType());
+							}
 					}
 				int cardChoice = userIntPut.nextInt();
 				cardChoice -= 1;
@@ -138,7 +155,7 @@ public class HeartsRunner
 				System.out.println("The pool now contains: ");
 				for (Card ca: pool)
 				{
-					System.out.println("The "+ca.getCardType()/*+ ", played by " +ca.getIndexOfLastPlayer()*/);
+					System.out.println("The "+ca.getCardType());
 				}
 			}
 		public static Player evaluatePool()
@@ -175,10 +192,10 @@ public class HeartsRunner
 		{
 			Collections.sort(players, new PlayerSorter());
 			System.out.println("The game is over! The final rankings are: ");
-			System.out.println("1st Place: "+players.get(0));
-			System.out.println("2nd Place: "+players.get(1));
-			System.out.println("3rd Place: "+players.get(2));
-			System.out.println("4th Place: "+players.get(3));
+			System.out.println("1st Place: "+players.get(0).getName());
+			System.out.println("2nd Place: "+players.get(1).getName());
+			System.out.println("3rd Place: "+players.get(2).getName());
+			System.out.println("4th Place: "+players.get(3).getName());
 		}
 		
 

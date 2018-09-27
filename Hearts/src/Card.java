@@ -3,12 +3,14 @@ public class Card
 		private int rank;
 		private String suit;
 		private int indexOfLastPlayer;
+		private boolean playable;
 		
-		public Card(String s, int r, int i)
+		public Card(String s, int r, int i, boolean p)
 		{
 			rank = r;
 			suit = s;
 			indexOfLastPlayer = i;
+			playable = p;
 		}
 		
 		public int getRank()
@@ -56,6 +58,15 @@ public class Card
 			{
 				this.indexOfLastPlayer = indexOfLastPlayer;
 			}
+		public boolean isPlayable()
+			{
+				return playable;
+			}
+		public void setPlayable(boolean playable)
+			{
+				this.playable = playable;
+			}
+		
 		
 		
 		
