@@ -10,7 +10,7 @@ public class HeartsRunner
 		static Scanner userStringPut = new Scanner(System.in);
 		static Scanner userIntPut = new Scanner(System.in);
 		static boolean heartsBroken = false;
-		static int turnCounter;
+		static int trickCounter;
 		
 		public static void main(String[] args)
 			{
@@ -22,14 +22,13 @@ public class HeartsRunner
 				do
 					{
 						heartsBroken = false;
-						turnCounter = 1;
+						trickCounter = 1;
 						generateDeck();
 						shuffleAndDeal(4);
 						Player currentlyUp = chooseWhoGoesFirst();
 						for (int j = 0; j < 13; j++)
 							{
 								turn(currentlyUp);
-								turnCounter += 1;
 								int startPlayer = players.indexOf(currentlyUp);
 								for (int i = 1; i < 4; i++)
 									{
@@ -53,9 +52,9 @@ public class HeartsRunner
 //												turn(h);
 //											}
 										turn(h);
-										turnCounter += 1;
 									}
 								currentlyUp = evaluatePool();
+								trickCounter += 1;
 							}
 						
 						for(Player h: players)
@@ -133,10 +132,27 @@ public class HeartsRunner
 		public static void turn(Player h)
 			{
 				System.out.println("Your turn, " + h.getName() + "! What card would you like to play? The (playable) cards in your hand are:");
-//				for(int i = 0; i < h.getHand().size(); i++)
-//					{
-//						System.out.println((i+1)+") The "+h.getHand().get(i).getRankString()+" of "+h.getHand().get(i).getSuit());
-//					}
+				boolean hasClubs = false;
+				for(Card c: h.getHand())
+					{
+						if(c.getSuit().equals("Clubs"))
+							{
+								hasClubs = true;
+							}
+					}
+				if((trickCounter > 1) || !hasClubs)
+					{
+						for(Player p: players)
+							{
+								for(Card c: p.getHand())
+									{
+										if(c.getSuit().equals("Diamonds") || c.getSuit().equals("Spades"))
+											{
+												c.setPlayable(true);
+											}
+									}
+							}
+					}
 				for(Card ca: h.getHand())
 					{
 						if(ca.isPlayable())
