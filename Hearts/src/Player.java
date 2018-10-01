@@ -5,12 +5,14 @@ public class Player
 		private String name;
 		private int score;
 		private ArrayList<Card> hand;
+		private boolean isAI;
 		
-		public Player(String n, int s, ArrayList<Card> h)
+		public Player(String n, int s, ArrayList<Card> h, boolean ai)
 		{
 			name = n;
 			score = s;
 			hand = h;
+			isAI = ai;
 		}
 
 		public String getName()
@@ -49,5 +51,14 @@ public class Player
 		{
 			hand.remove(c);
 		}
+		public boolean isAI()
+		{
+			return isAI;
+		}
+		public void setAI(boolean isAI)
+		{
+			this.isAI = isAI;
+		}
+		
 		
 	}
