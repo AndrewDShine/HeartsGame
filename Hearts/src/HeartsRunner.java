@@ -13,8 +13,9 @@ public class HeartsRunner
 		static boolean heartsBroken = false;
 		static boolean queenDanger = true;
 		static int trickCounter;
+		static int turnCounter;
 		static String ledSuit = "Clubs";
-		
+
 		public static void main(String[] args)
 			{
 //				This block of code runs once, when the game first begins.
@@ -33,8 +34,11 @@ public class HeartsRunner
 							{
 								turn(currentlyUp);
 								int startPlayer = players.indexOf(currentlyUp);
+								turnCounter = 1;
 								for (int i = 1; i < 4; i++)
 									{
+										turnCounter += 1;
+//										System.out.println(turnCounter);
 										Player h = players.get(0);
 										switch (startPlayer + 1)
 										{
@@ -170,12 +174,15 @@ public class HeartsRunner
 						checkPlayability(h.getHand());
 						for(Card c: h.getHand())
 							{
-								if(c.isPlayable())
-									{
-										System.out.println(c.getCardType());
-									}
+//								if(c.isPlayable())
+//									{
+										System.out.print(c.getCardType()+ " ");
+//									}
 							}
+						System.out.println();
 						setImportance(h);
+						Collections.sort(h.getHand(), new ImportanceSorter());
+						playCard(h.getHand().get(0), h);
 					}
 				
 			}
@@ -282,6 +289,12 @@ public class HeartsRunner
 		{
 			ArrayList<Card> pH = new ArrayList<Card>(); //Playable Hand
 			ArrayList<Integer> numOfSuits = new ArrayList<Integer>();
+			ArrayList<Integer> sortedSuits = new ArrayList<Integer>();
+			if(p.getHand().size() == 0)
+				{
+					System.out.println("no hand b");
+					return;
+				}
 			for(Card c: p.getHand())
 				{
 					if(c.isPlayable())
@@ -289,9 +302,15 @@ public class HeartsRunner
 							pH.add(c);
 						}
 				}
+			if(pH.size() == 0)
+				{
+					System.out.println("Err, no playables");
+					return;
+				}
 			if (pH.size() == 1)
 				{
 					playCard(pH.get(0), p);
+					return;
 				}
 			for(Card c: pH)
 				{
@@ -301,16 +320,37 @@ public class HeartsRunner
 							numOfSuits.set(0, numOfSuits.get(0)+1);
 							break;
 						case "Spades":
-							numOfSuits.set(0, numOfSuits.get(0)+1);
+							numOfSuits.set(1, numOfSuits.get(1)+1);
 							break;
 						case "Diamonds":
-							numOfSuits.set(0, numOfSuits.get(0)+1);
+							numOfSuits.set(2, numOfSuits.get(2)+1);
 							break;
 						case "Hearts":
-							numOfSuits.set(0, numOfSuits.get(0)+1);
+							numOfSuits.set(3, numOfSuits.get(3)+1);
 							break;
 					}
 				}
+			String chosenSuit = null;
+			for(int i = 0; i < numOfSuits.size(); i++)
+				{
+					sortedSuits.set(i, numOfSuits.get(i));
+				}
+			Collections.sort(sortedSuits);
+			switch(numOfSuits.indexOf(sortedSuits.get(0)))
+			{
+				case 0:
+					chosenSuit = "Clubs";
+					break;
+				case 1:
+					chosenSuit = "Spades";
+					break;
+				case 2:
+					chosenSuit = "Diamonds";
+					break;
+				case 3:
+					chosenSuit = "Heart";
+					break;
+			}
 			for(Card c: pH)
 				{
 					if(pool.size() > 0)
@@ -319,14 +359,20 @@ public class HeartsRunner
 								{
 									c.setImportance(c.getRank());
 								}	
-							else
+							else 
 								{
-									
+									if(c.getSuit().equals(chosenSuit))
+										{
+											c.setImportance(c.getRank());
+										}
 								}
 						}
 					else
 						{
-							
+							if(c.getSuit().equals(chosenSuit))
+								{
+									c.setImportance(c.getRank());
+								}
 						}
 					if(queenDanger)
 						{
