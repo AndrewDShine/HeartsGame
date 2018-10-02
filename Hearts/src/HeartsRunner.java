@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Collections;
 
@@ -111,10 +112,10 @@ public class HeartsRunner
 					players.add((numOfPlayers+i), new Player("Comp-"+(i+1), 0, new ArrayList<Card>(), true));
 					System.out.println("Meet your new AI friend, Comp-"+(i+1)+"!");
 				}
-			for(Player p: players)
-				{
-					System.out.println(p.getName());
-				}
+//			for(Player p: players)
+//				{
+//					System.out.println(p.getName());
+//				}
 		}
 		public static void shuffleAndDeal(int numOfPlayers)
 		{
@@ -160,22 +161,21 @@ public class HeartsRunner
 						int cardChoice = userIntPut.nextInt();
 						cardChoice -= 1;
 						Card c = h.getHand().get(cardChoice);
-				
-						pool.add(c);
-						System.out.println(h.getName() + " played the "+c.getCardType());
-						c.setIndexOfLastPlayer(players.indexOf(h));
-						h.removeFromHand(h.getHand().remove(cardChoice));
-						System.out.println("The pool now contains: ");
-						for (Card ca: pool)
-							{
-								System.out.println("The "+ca.getCardType());
-							}
+						playCard(c, h);
+						
 					}
 				else
 					{
 						System.out.println("It's "+h.getName()+"'s turn!");
 						checkPlayability(h.getHand());
-						
+						for(Card c: h.getHand())
+							{
+								if(c.isPlayable())
+									{
+										System.out.println(c.getCardType());
+									}
+							}
+						setImportance(h);
 					}
 				
 			}
@@ -231,7 +231,7 @@ public class HeartsRunner
 				}
 			for(Card c: hand)
 				{
-					if(trickCounter == 1)
+					if(trickCounter == 1 && pool.size() == 0)
 						{
 							if(c.getCardType().equals("2 of Clubs"))
 								{
@@ -278,37 +278,56 @@ public class HeartsRunner
 						}
 				}
 		}
-		public static void setImportance(ArrayList<Card> hand)
+		public static void setImportance(Player p)
 		{
 			ArrayList<Card> pH = new ArrayList<Card>(); //Playable Hand
-			int[] numOfSuits = new int[4];
-			for(Card c: hand)
+			ArrayList<Integer> numOfSuits = new ArrayList<Integer>();
+			for(Card c: p.getHand())
 				{
 					if(c.isPlayable())
 						{
 							pH.add(c);
 						}
 				}
+			if (pH.size() == 1)
+				{
+					playCard(pH.get(0), p);
+				}
 			for(Card c: pH)
 				{
 					switch(c.getSuit())
 					{
 						case "Clubs":
-							numOfSuits[0] += 1;
+							numOfSuits.set(0, numOfSuits.get(0)+1);
 							break;
 						case "Spades":
-							numOfSuits[1] += 1;
+							numOfSuits.set(0, numOfSuits.get(0)+1);
 							break;
 						case "Diamonds":
-							numOfSuits[2] += 1;
+							numOfSuits.set(0, numOfSuits.get(0)+1);
 							break;
 						case "Hearts":
-							numOfSuits[3] += 1;
+							numOfSuits.set(0, numOfSuits.get(0)+1);
 							break;
 					}
 				}
 			for(Card c: pH)
 				{
+					if(pool.size() > 0)
+						{
+							if(c.getSuit().equals(ledSuit))
+								{
+									c.setImportance(c.getRank());
+								}	
+							else
+								{
+									
+								}
+						}
+					else
+						{
+							
+						}
 					if(queenDanger)
 						{
 							if(c.getSuit().equals("Spades") && c.getRank() > 12)
@@ -316,20 +335,20 @@ public class HeartsRunner
 									c.setImportance(1000);
 								}
 						}
-					if(pool.size() > 0)
-						{
-							if(c.getSuit().equals(ledSuit))
-								{
-									c.setImportance(c.getRank());
-								}	
-						}
-					else
-						{
-							
-						}
-					
 				}
 			
+		}
+		public static void playCard(Card c, Player p)
+		{
+			pool.add(c);
+			System.out.println(p.getName() + " played the "+c.getCardType());
+			c.setIndexOfLastPlayer(players.indexOf(p));
+			p.removeFromHand(c);
+			System.out.println("The pool now contains: ");
+			for (Card ca: pool)
+				{
+					System.out.println("The "+ca.getCardType());
+				}
 		}
 		
 
