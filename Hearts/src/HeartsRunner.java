@@ -70,7 +70,7 @@ public class HeartsRunner
 						
 						for(Player h: players)
 							{
-								if(h.getScore() == 50)
+								if(h.getScore() >= 50)
 									{
 										win = true;
 									}
@@ -172,14 +172,14 @@ public class HeartsRunner
 					{
 						System.out.println("It's "+h.getName()+"'s turn!");
 						checkPlayability(h.getHand());
-						for(Card c: h.getHand())
-							{
-//								if(c.isPlayable())
-//									{
-										System.out.print(c.getCardType()+ " ");
-//									}
-							}
-						System.out.println();
+//						for(Card c: h.getHand())
+//							{
+////								if(c.isPlayable())
+////									{
+//										System.out.print(c.getCardType()+ " ");
+////									}
+//							}
+//						System.out.println();
 						setImportance(h);
 						Collections.sort(h.getHand(), new ImportanceSorter());
 						playCard(h.getHand().get(0), h);
@@ -213,6 +213,10 @@ public class HeartsRunner
 			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool, and with it " + points + " points!");
 			players.get(playerOfHighestCard).addToScore(points);
 			pool.clear();
+			for(Player p: players)
+				{
+					System.out.println(p.getName() + " " + p.getScore());
+				}
 			return players.get(playerOfHighestCard);
 			
 		}
@@ -290,11 +294,7 @@ public class HeartsRunner
 			ArrayList<Card> pH = new ArrayList<Card>(); //Playable Hand
 			ArrayList<Integer> numOfSuits = new ArrayList<Integer>();
 			ArrayList<Integer> sortedSuits = new ArrayList<Integer>();
-			if(p.getHand().size() == 0)
-				{
-					System.out.println("no hand b");
-					return;
-				}
+
 			for(Card c: p.getHand())
 				{
 					if(c.isPlayable())
@@ -307,11 +307,16 @@ public class HeartsRunner
 					System.out.println("Err, no playables");
 					return;
 				}
-			if (pH.size() == 1)
-				{
-					playCard(pH.get(0), p);
-					return;
-				}
+			
+			numOfSuits.add(0, 0);
+			numOfSuits.add(1, 0);
+			numOfSuits.add(2, 0);
+			numOfSuits.add(3, 0);
+			sortedSuits.add(0, 0);
+			sortedSuits.add(1, 0);
+			sortedSuits.add(2, 0);
+			sortedSuits.add(3, 0);
+			
 			for(Card c: pH)
 				{
 					switch(c.getSuit())
