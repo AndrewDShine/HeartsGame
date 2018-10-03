@@ -23,6 +23,7 @@ public class HeartsRunner
 				System.out.println("Ready to play Hearts? It's a four-player game, so you'd better grab some friends!");
 				makePlayers();
 				boolean win = false;
+				
 				do
 					{
 						heartsBroken = false;
