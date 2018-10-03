@@ -26,20 +26,21 @@ public class HeartsRunner
 				do
 					{
 						heartsBroken = false;
+						queenDanger = true;
 						trickCounter = 1;
 						generateDeck();
 						shuffleAndDeal(4);
 						Player currentlyUp = chooseWhoGoesFirst();
 						for (int j = 0; j < 13; j++)
 							{
+								turnCounter = 1;
 								turn(currentlyUp);
 								int startPlayer = players.indexOf(currentlyUp);
-								turnCounter = 1;
 								for (int i = 1; i < 4; i++)
 									{
 										turnCounter += 1;
-//										System.out.println(turnCounter);
 										Player h = players.get(0);
+										
 										switch (startPlayer + 1)
 										{
 										case 1:
@@ -54,11 +55,9 @@ public class HeartsRunner
 											break;
 									
 										}
-//										if (h.getHand().size() > 0)
-//											{
-//												turn(h);
-//											}
+										
 										turn(h);
+										
 										if(i == 1)
 											{
 												ledSuit = pool.get(0).getSuit();
@@ -240,13 +239,20 @@ public class HeartsRunner
 						}
 					c.setPlayable(false);
 				}
+			
+			if(numOfNeededCard == 0 && trickCounter > 1)
+				{
+					heartsBroken = true;
+				}
+			
 			for(Card c: hand)
 				{
 					if(trickCounter == 1 && pool.size() == 0)
 						{
-							if(c.getCardType().equals("2 of Clubs"))
+							if(c.getSuit().equals("Clubs") && c.getRank() == 2)
 								{
 									c.setPlayable(true);
+									return;
 								}
 						}
 					else if(pool.size() > 0)
@@ -300,6 +306,7 @@ public class HeartsRunner
 					if(c.isPlayable())
 						{
 							pH.add(c);
+							c.setImportance(999);
 						}
 				}
 			if(pH.size() == 0)
@@ -374,7 +381,11 @@ public class HeartsRunner
 						}
 					else
 						{
-							if(c.getSuit().equals(chosenSuit))
+							if(c.getSuit().equals("Clubs") && c.getRank() == 2)
+								{
+									c.setImportance(Integer.MIN_VALUE);
+								}
+							else if(c.getSuit().equals(chosenSuit))
 								{
 									c.setImportance(c.getRank());
 								}
@@ -395,6 +406,7 @@ public class HeartsRunner
 			System.out.println(p.getName() + " played the "+c.getCardType());
 			c.setIndexOfLastPlayer(players.indexOf(p));
 			p.removeFromHand(c);
+			
 			System.out.println("The pool now contains: ");
 			for (Card ca: pool)
 				{
