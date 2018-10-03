@@ -172,14 +172,14 @@ public class HeartsRunner
 					{
 						System.out.println("It's "+h.getName()+"'s turn!");
 						checkPlayability(h.getHand());
-//						for(Card c: h.getHand())
-//							{
-////								if(c.isPlayable())
-////									{
-//										System.out.print(c.getCardType()+ " ");
-////									}
-//							}
-//						System.out.println();
+						for(Card c: h.getHand())
+							{
+								if(c.isPlayable())
+									{
+										System.out.print(c.getCardType()+ " ");
+									}
+							}
+						System.out.println();
 						setImportance(h);
 						Collections.sort(h.getHand(), new ImportanceSorter());
 						playCard(h.getHand().get(0), h);
@@ -307,8 +307,8 @@ public class HeartsRunner
 					if(c.isPlayable())
 						{
 							pH.add(c);
-							c.setImportance(999);
 						}
+					c.setImportance(999);
 				}
 			if(pH.size() == 0)
 				{
@@ -376,6 +376,21 @@ public class HeartsRunner
 								{
 									if(c.getSuit().equals(chosenSuit))
 										{
+											c.setImportance(c.getRank());
+										}
+									else
+										{
+											switch(c.getSuit())
+											{
+											case "Clubs":
+												break;
+											case "Spades":
+												break;
+											case "Diamonds":
+												break;
+											case "Hearts":
+												break;
+											}
 											c.setImportance(c.getRank());
 										}
 								}
