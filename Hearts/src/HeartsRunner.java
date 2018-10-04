@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Collections;
 
@@ -183,6 +182,13 @@ public class HeartsRunner
 						System.out.println();
 						setImportance(h);
 						Collections.sort(h.getHand(), new ImportanceSorter());
+						for(Card c: h.getHand())
+							{
+//								if(c.isPlayable())
+//									{
+										System.out.print(c.getCardType()+ " ");
+//									}
+							}
 						playCard(h.getHand().get(0), h);
 					}
 				
@@ -190,7 +196,7 @@ public class HeartsRunner
 		public static Player evaluatePool()
 		{
 			String suitLed = pool.get(0).getSuit();
-			System.out.println(pool.get(0).getCardType());
+//			System.out.println(pool.get(0).getCardType());
 			int playerOfHighestCard = 0;
 			int highestCardRank = Integer.MIN_VALUE;
 			int points = 0;
