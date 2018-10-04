@@ -116,6 +116,7 @@ public class HeartsRunner
 					players.add((numOfPlayers+i), new Player("Comp-"+(i+1), 0, new ArrayList<Card>(), true));
 					System.out.println("Meet your new AI friend, Comp-"+(i+1)+"!");
 				}
+			System.out.print("\n");
 //			for(Player p: players)
 //				{
 //					System.out.println(p.getName());
@@ -189,13 +190,16 @@ public class HeartsRunner
 		public static Player evaluatePool()
 		{
 			String suitLed = pool.get(0).getSuit();
+			System.out.println(pool.get(0).getCardType());
 			int playerOfHighestCard = 0;
+			int highestCardRank = Integer.MIN_VALUE;
 			int points = 0;
 			
 			for (Card c: pool)
 				{
-					if (c.getSuit().equals(suitLed) && c.getRank() > playerOfHighestCard)
+					if ((c.getSuit().equals(suitLed)) && c.getRank() > (highestCardRank))
 						{
+							highestCardRank = c.getRank();
 							playerOfHighestCard = c.getIndexOfLastPlayer();
 						}
 				}
