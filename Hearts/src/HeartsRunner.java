@@ -34,6 +34,7 @@ public class HeartsRunner
 						Player currentlyUp = chooseWhoGoesFirst();
 						for (int j = 0; j < 13; j++)
 							{
+								ledSuit = null;
 								turnCounter = 1;
 								turn(currentlyUp);
 								int startPlayer = players.indexOf(currentlyUp);
@@ -57,7 +58,7 @@ public class HeartsRunner
 									
 										}
 										
-										turn(h);
+										turn(h); //hey its ya boy yeet
 										
 										if(i == 1)
 											{
@@ -78,7 +79,6 @@ public class HeartsRunner
 					}
 				while(!win);
 				chooseWinner();
-				
 			}
 		public static void generateDeck()
 		{
@@ -241,7 +241,7 @@ public class HeartsRunner
 					c.setPlayable(false);
 				}
 			
-			if(numOfNeededCard == 0 && trickCounter > 1)
+			if(numOfNeededCard == 0 && trickCounter > 1 && pool.size() > 0)
 				{
 					heartsBroken = true;
 				}

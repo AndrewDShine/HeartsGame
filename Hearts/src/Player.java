@@ -60,5 +60,4 @@ public class Player
 			this.isAI = isAI;
 		}
 		
-		
 	}
