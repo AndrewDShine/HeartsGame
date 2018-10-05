@@ -174,10 +174,28 @@ public class HeartsRunner
 							{
 								System.out.println((h.getHand().indexOf(ca)+1)+") The "+ca.getCardType());
 							}
-						int cardChoice = userIntPut.nextInt();
-						cardChoice -= 1;
-						Card c = h.getHand().get(cardChoice);
-						playCard(c, h);
+						
+						
+						checkPlayability(h.getHand());
+						
+						boolean playedGoodCard = false;
+						do
+							{
+								int cardChoice = userIntPut.nextInt();
+								cardChoice -= 1;
+								Card c = h.getHand().get(cardChoice);
+								
+								if(c.isPlayable())
+									{
+										playCard(c, h);
+										playedGoodCard = true;
+									}
+								else
+									{
+										System.out.println("That card is not legally playable right now. Please select a different one!");
+									}
+							}
+						while(!playedGoodCard);
 						
 					}
 				else
