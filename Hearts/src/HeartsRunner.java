@@ -14,6 +14,7 @@ public class HeartsRunner
 		static int trickCounter;
 		static int turnCounter;
 		static String ledSuit = "Clubs";
+		static ArrayList<Integer> deckPoints = new ArrayList<Integer>();
 
 		public static void main(String[] args)
 			{
@@ -28,6 +29,11 @@ public class HeartsRunner
 						heartsBroken = false;
 						queenDanger = true;
 						trickCounter = 1;
+						for(int i = 0; i < deckPoints.size(); i++)
+							{
+								deckPoints.set(i, 0);
+							}
+						
 						generateDeck();
 						shuffleAndDeal(4);
 						Player currentlyUp = chooseWhoGoesFirst();
@@ -75,6 +81,24 @@ public class HeartsRunner
 								currentlyUp = evaluatePool();
 								trickCounter += 1;
 							}
+						
+						for(int i: deckPoints)
+							{
+								if(i == 26)
+									{
+										Player p = players.get(deckPoints.indexOf(i));
+										deckPoints.set(deckPoints.indexOf(i), 0);
+										for(Player h: players)
+											{
+												if(!(h.equals(p)))
+													{
+														h.addToScore(26);
+													}
+											}
+										System.out.println(p.getName() + " shot the moon! They take 0 points, and all their opponents take 26!");
+									}
+							}
+						
 						
 						for(Player h: players)
 							{
@@ -250,13 +274,11 @@ public class HeartsRunner
 							points += 13;
 						}
 				}
-			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool, and with it " + points + " points!");
-			players.get(playerOfHighestCard).addToScore(points);
+			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool!");
 			pool.clear();
-			for(Player p: players)
-				{
-					System.out.println(p.getName() + " " + p.getScore());
-				}
+			
+			deckPoints.set(playerOfHighestCard, deckPoints.get(playerOfHighestCard) + points);
+			
 			return players.get(playerOfHighestCard);
 			
 		}
