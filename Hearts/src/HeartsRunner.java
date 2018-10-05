@@ -57,11 +57,19 @@ public class HeartsRunner
 									
 										}
 										
-										turn(h); //hey its ya boy yeet
-										
 										if(i == 1)
 											{
 												ledSuit = pool.get(0).getSuit();
+											}
+										turn(h); //hey its ya boy yeet
+										
+									}
+								for(Card c: pool)
+									{
+										if(c.getCardType().equals("Queen of Spades"))
+											{
+												queenDanger = false;
+//												System.out.println("queen's played");
 											}
 									}
 								currentlyUp = evaluatePool();
@@ -74,6 +82,10 @@ public class HeartsRunner
 									{
 										win = true;
 									}
+							}
+						if(!win)
+							{
+								System.out.println("Out of cards? Let's reshuffle the deck and get back into action!");
 							}
 					}
 				while(!win);
@@ -172,23 +184,23 @@ public class HeartsRunner
 					{
 						System.out.println("It's "+h.getName()+"'s turn!");
 						checkPlayability(h.getHand());
-						for(Card c: h.getHand())
-							{
-								if(c.isPlayable())
-									{
-										System.out.print(c.getCardType()+ " ");
-									}
-							}
-						System.out.println();
-						setImportance(h);
-						Collections.sort(h.getHand(), new ImportanceSorter());
-						for(Card c: h.getHand())
-							{
+//						for(Card c: h.getHand())
+//							{
 //								if(c.isPlayable())
 //									{
-										System.out.print(c.getCardType()+ " ");
+//										System.out.print(c.getCardType()+ " ");
 //									}
-							}
+//							}
+//						System.out.println();
+						setImportance(h);
+						Collections.sort(h.getHand(), new ImportanceSorter());
+//						for(Card c: h.getHand())
+//							{
+//								if(c.isPlayable())
+//									{
+//										System.out.print(c.getCardType()+ " ");
+//									}
+//							}
 						playCard(h.getHand().get(0), h);
 					}
 				
