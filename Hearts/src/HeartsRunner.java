@@ -14,7 +14,6 @@ public class HeartsRunner
 		static int trickCounter;
 		static int turnCounter;
 		static String ledSuit = "Clubs";
-		static ArrayList<Integer> deckPoints = new ArrayList<Integer>();
 
 		public static void main(String[] args)
 			{
@@ -29,10 +28,6 @@ public class HeartsRunner
 						heartsBroken = false;
 						queenDanger = true;
 						trickCounter = 1;
-						for(int i = 0; i < deckPoints.size(); i++)
-							{
-								deckPoints.set(i, 0);
-							}
 						
 						generateDeck();
 						shuffleAndDeal(4);
@@ -81,24 +76,6 @@ public class HeartsRunner
 								currentlyUp = evaluatePool();
 								trickCounter += 1;
 							}
-						
-						for(int i: deckPoints)
-							{
-								if(i == 26)
-									{
-										Player p = players.get(deckPoints.indexOf(i));
-										deckPoints.set(deckPoints.indexOf(i), 0);
-										for(Player h: players)
-											{
-												if(!(h.equals(p)))
-													{
-														h.addToScore(26);
-													}
-											}
-										System.out.println(p.getName() + " shot the moon! They take 0 points, and all their opponents take 26!");
-									}
-							}
-						
 						
 						for(Player h: players)
 							{
@@ -274,10 +251,10 @@ public class HeartsRunner
 							points += 13;
 						}
 				}
-			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool!");
+			System.out.println(players.get(playerOfHighestCard).getName() + " takes the pool, and with it " + points + " points!");
 			pool.clear();
 			
-			deckPoints.set(playerOfHighestCard, deckPoints.get(playerOfHighestCard) + points);
+			players.get(playerOfHighestCard).addToScore(points);
 			
 			return players.get(playerOfHighestCard);
 			
@@ -286,10 +263,10 @@ public class HeartsRunner
 		{
 			Collections.sort(players, new PlayerSorter());
 			System.out.println("The game is over! The final rankings are: ");
-			System.out.println("1st Place: "+players.get(0).getName());
-			System.out.println("2nd Place: "+players.get(1).getName());
-			System.out.println("3rd Place: "+players.get(2).getName());
-			System.out.println("4th Place: "+players.get(3).getName());
+			System.out.println("1st Place: "+players.get(0).getName() + ", with " + players.get(0).getScore() + " points!");
+			System.out.println("2nd Place: "+players.get(1).getName() + ", with " + players.get(1).getScore() + " points!");			
+			System.out.println("3rd Place: "+players.get(2).getName() + ", with " + players.get(2).getScore() + " points!");
+			System.out.println("4th Place: "+players.get(3).getName() + ", with " + players.get(3).getScore() + " points!");
 		}
 		public static void checkPlayability(ArrayList<Card> hand)
 		{
