@@ -185,7 +185,7 @@ public class HeartsRunner
 								int cardChoice = userIntPut.nextInt();
 								cardChoice -= 1;
 								Card c = h.getHand().get(cardChoice);
-								
+
 								if(c.isPlayable())
 									{
 										playCard(c, h);
