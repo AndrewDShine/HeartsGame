@@ -77,7 +77,4 @@ public class Card
 				this.importance = importance;
 			}
 		
-		
-		
-		
 	}
